@@ -10,11 +10,11 @@ const Photos = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const url = `https://gallery-app-server.vercel.app/photos`;
-    const urlSearch = `https://gallery-app-server.vercel.app/photos${search}`;
-    const urlSort = `https://gallery-app-server.vercel.app/photos${sort}`;
+    // const urlSearch = `https://gallery-app-server.vercel.app/photos/${search}`;
+    // const urlSort = `https://gallery-app-server.vercel.app/photos/${sort}`;
 
     const deletePhoto = (id) => {
-        fetch(`https://gallery-app-server.vercel.app/photos${id}`, {
+        fetch(`https://gallery-app-server.vercel.app/photos/${id}`, {
             method: "DELETE",
         }).then(() => {
             setPhotos(photos.filter((photo) => photo.id !== id));
@@ -26,7 +26,7 @@ const Photos = () => {
         const sortFetch = async () => {
             setLoading(true);
             try {
-                const response = await fetch(urlSort);
+                const response = await fetch(`https://gallery-app-server.vercel.app/photos?_sort=id&_order=${sort}&q=${submited}`);
                 const data = await response.json();
                 setPhotos(data);
                 setLoading(false);
@@ -34,17 +34,17 @@ const Photos = () => {
                 setError(error);
                 setLoading(false);
             }
-            if (search) {
-                try {
-                    const response = await fetch(urlSearch);
-                    const data = await response.json();
-                    setPhotos(data);
-                    setLoading(false);
-                } catch (error) {
-                    setError(error);
-                    setLoading(false);
-                }
-            }
+            // if (search) {
+            //     try {
+            //         const response = await fetch(urlSearch);
+            //         const data = await response.json();
+            //         setPhotos(data);
+            //         setLoading(false);
+            //     } catch (error) {
+            //         setError(error);
+            //         setLoading(false);
+            //     }
+            // }
         };
         sortFetch();
     }, [sort, submited]);
